@@ -1,0 +1,75 @@
+<section class="screen">
+    
+    <app-widget
+        [balance]="currentBalance?.balance"
+        [consumption]="currentBalance?.consumption"
+        [minutes]="currentBalance?.minutes"
+        [actualizacion]="actualizacion"
+    />
+
+    <div class="grid">
+        
+        <div class="col-12 md:col-6 lg:6">
+            <p class="text-title">Consumo (Megas)</p>
+            <div class="grid">
+                <div *ngIf="this.chat_data?.recargas?.length > 0 && this.chat_data?.consumos?.length > 0" class="col-12 md:col-12 lg:col-12">
+                    <p-chart type="bar" [data]="data" [options]="options"></p-chart>
+                </div>
+                <div class="col-12 md:col-12 lg:col-12" *ngIf="chat_data?.length < 1">
+                    <div class="surface-card shadow-2 p-3 border-round" style="min-height: 350px;display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+                    ">
+                        <div class="text-500" style="margin-bottom: 20px;">No consumos para mostrar</div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                            <i class="pi pi-money-bill text-blue-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-12 md:col-6 lg:6">
+            <p class="text-title">Transacciones</p>
+            <div class="grid" style="overflow: auto; max-height: 400px;">
+                <div class="col-12 md:col-12 lg:col-12" *ngFor="let transaction of transactions">
+                    <div class="surface-card shadow-2 p-3 border-round">
+                        <div class="flex justify-content-between">
+                            <div class="flex align-items-center justify-content-center">
+                                <span [ngClass]="{'text-red-500': transaction.type === 1, 'text-green-500': transaction.type === 3}" class="font-medium">
+                                    {{transaction.type === 1 ? '-' : '+'}}${{ transaction.balance }} 
+                                </span>
+                                
+                                <span class="text-500">&nbsp;{{ transaction.type === 1 ? 'compra de paquete' : 'recarga de saldo' }}</span>
+                               
+                            </div>
+                            <div class="flex align-items-center justify-content-center bg-green-100 border-round" style="width:2.5rem;height:2.5rem">
+                                <i class="pi pi-money-bill text-green-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width: 9rem;">
+                            <span style="font-size: 12px;" class="text-blue-500">{{transaction.creation_date}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-12" *ngIf="transactions?.length < 1">
+                    <div class="surface-card shadow-2 p-3 border-round" style="min-height: 350px;display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+                    ">
+                        <div class="text-500" style="margin-bottom: 20px;">No hay transacciones</div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                            <i class="pi pi-money-bill text-blue-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+
+</section>
+

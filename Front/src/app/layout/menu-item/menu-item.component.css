@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+.display-none{
+  display: none;
+}
+
+
+.items-collapse{
+  position: absolute;
+  left: 100%;
+  margin-top: -70px;
+  background: var(--sidebar-color)
+}
+
+.view-text{
+  display: block !important;
+}
+
+.view-icon{
+  display: block !important;
+  text-align: right;
+  margin-right: 30px;
+}

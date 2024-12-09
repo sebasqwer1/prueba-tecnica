@@ -1,0 +1,410 @@
+openapi: 3.0.0
+info:
+  title: Bss Service
+  description: Esto es un servicio diseñado para registrar consumos y obtener consumos
+    en tiempo real.
+  version: 1.0.0
+servers:
+- url: http://192.168.3.66:5000/rest/bss_service/v1.0
+  description: API
+paths:
+
+  /login:
+    post:
+      tags:
+      - Auntentication
+      summary: Inicio de sesión
+      description: Inicio de sesión
+      operationId: login
+      requestBody:
+        description: Datos de entrada
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        "200":
+          description: Confirmación de inicio de sesión
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        "400":
+          description: No autorizado
+      x-openapi-router-controller: swagger_server.controllers.auntentication_controller
+
+  /record_consumption:
+    post:
+      tags:
+      - Consumption
+      summary: Registrar consumo de datos por cliente
+      description: Registrar consumo de datos por cliente
+      operationId: record_consumption
+      requestBody:
+        description: Datos de entrada
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordConsumption'
+      responses:
+        "200":
+          description: Confirmación de regístro de consumo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordConsumptionResponse'
+        "400":
+          description: No autorizado
+      x-openapi-router-controller: swagger_server.controllers.consumption_controller
+
+  /recharge_balance:
+    post:
+      tags:
+      - Consumption
+      summary: Recargar saldo por cliente
+      description: Recargar saldo por cliente
+      operationId: recharge_balance
+      requestBody:
+        description: Datos de entrada
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RechargeBalance'
+      responses:
+        "200":
+          description: Confirmación de regístro de recarga
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordConsumptionResponse'
+        "400":
+          description: No autorizado
+      x-openapi-router-controller: swagger_server.controllers.consumption_controller
+
+  /get_data_consumption_graph:
+    get:
+      tags:
+      - Consumption
+      summary: Obtener datos para graficar consumos de datos vs recargas por mes
+      description: Obtener datos para graficar consumos de datos vs recargas por mes
+      operationId: get_data_consumption_graph
+      parameters:
+      - name: client_id
+        in: query
+        description: Ingrese el id del cliente
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+      responses:
+        "200":
+          description: Datos de consumo obtenidos por usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsumptionGraphResponse'
+        "400":
+          description: No autorizado
+      x-openapi-router-controller: swagger_server.controllers.consumption_controller
+
+  /get_record_consumption:
+    get:
+      tags:
+      - Consumption
+      summary: Obtener consumos registrados por cliente
+      description: Obtener consumos registrados por cliente
+      operationId: get_record_consumption
+      parameters:
+      - name: client_id
+        in: query
+        description: Ingrese el id del cliente
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+      responses:
+        "200":
+          description: Datos de consumo obtenidos por usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsumptionResponse'
+        "400":
+          description: No autorizado
+      x-openapi-router-controller: swagger_server.controllers.consumption_controller
+
+  /get_transactions:
+    get:
+      tags:
+      - Consumption
+      summary: Obtener transacciones realizadas
+      description: Obtener transacciones realizadas
+      operationId: get_transactions
+      parameters:
+      - name: client_id
+        in: query
+        description: Ingrese el id del cliente
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+      responses:
+        "200":
+          description: Transacciones realizadas por el usuario
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionsResponse'
+        "400":
+          description: No autorizado
+      x-openapi-router-controller: swagger_server.controllers.consumption_controller
+
+  /deposit_balance:
+    post:
+      tags:
+      - Consumption
+      summary: Deopistar dinero para actualización de saldo
+      description: Deopistar dinero para actualización de saldo
+      operationId: deposit_balance
+      requestBody:
+        description: Ingreso de saldo
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepositBalanceRequest'
+      responses:
+        "200":
+          description: Confirmación de regístro de consumo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordConsumptionResponse'
+        "400":
+          description: No autorizado
+      x-openapi-router-controller: swagger_server.controllers.consumption_controller
+
+components:
+  schemas:
+
+    DepositBalanceRequest:
+      required:
+      - balance
+      - client_id
+      properties:
+        client_id:
+          type: integer
+          example: 1
+        balance:
+          type: integer
+          example: 20
+    TransactionsResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 0
+        message:
+          type: string
+          example: Datos obtenidos exitosamente.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionsResponseData'
+      example:
+        code: 0
+        data:
+        - balance: 1
+          creation_date: "1"
+          type: 1
+        - balance: 1
+          creation_date: "1"
+          type: 1
+        message: Datos obtenidos exitosamente.
+    TransactionsResponseData:
+      type: object
+      properties:
+        balance:
+          type: integer
+          example: 1
+        creation_date:
+          type: string
+          example: "1"
+        type:
+          type: integer
+          example: 1
+      example:
+        balance: 1
+        creation_date: "1"
+        type: 1
+    ConsumptionGraphResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 0
+        message:
+          type: string
+          example: Datos obtenidos exitosamente.
+        data:
+          $ref: '#/components/schemas/ConsumptionGraphResponseData'
+      example:
+        code: 0
+        data:
+          recharge:
+          - 2024-12
+          - 90
+          consumption:
+          - 2024-01
+          - 120
+          client_id: 1
+        message: Datos obtenidos exitosamente.
+    ConsumptionGraphResponseData:
+      type: object
+      properties:
+        client_id:
+          type: integer
+          example: 1
+        consumption:
+          type: array
+          example:
+          - 2024-01
+          - 120
+          items:
+            oneOf:
+            - type: string
+            - type: number
+        recharge:
+          type: array
+          example:
+          - 2024-12
+          - 90
+          items:
+            oneOf:
+            - type: string
+            - type: number
+      example:
+        recharge:
+        - 2024-12
+        - 90
+        consumption:
+        - 2024-01
+        - 120
+        client_id: 1
+    RecordConsumption:
+      required:
+      - client_id
+      - consumption
+      - minutes
+      properties:
+        client_id:
+          type: integer
+          example: 1
+        balance:
+          type: integer
+        consumption:
+          type: integer
+          example: 230
+        minutes:
+          type: integer
+          example: 90
+      example:
+        minutes: 90
+        consumption: 230
+        client_id: 1
+    RecordConsumptionResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 0
+        message:
+          type: string
+          example: Se ha registrado el consumo exitosamente.
+      example:
+        code: 0
+        message: Se ha registrado el consumo exitosamente.
+    ConsumptionResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 0
+        message:
+          type: string
+          example: Datos obtenidos exitosamente.
+        data:
+          $ref: '#/components/schemas/RecordConsumption'
+      example:
+        code: 0
+        data:
+          balance: 0
+          minutes: 90
+          consumption: 230
+          client_id: 1
+        message: Datos obtenidos exitosamente.
+    RechargeBalance:
+      required:
+      - client_id
+      - package
+      properties:
+        client_id:
+          type: integer
+          example: 1
+        package:
+          type: integer
+          example: 2
+
+
+
+
+
+    LoginRequest:
+      required:
+      - password
+      - username
+      properties:
+        username:
+          type: string
+          example: sebasqwer1
+        password:
+          type: string
+          example: 1U2923098EW2328WEYE61321RWER12311AAASD8273312=
+    LoginResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 0
+        message:
+          type: string
+          example: Usuario utenticado exitosamente.
+        data:
+          $ref: '#/components/schemas/LoginResponseData'
+      example:
+        code: 0
+        data:
+          user_name: Sebasqwer1
+          name: Sebastian Alvarado.
+          client_id: 1
+        message: Usuario utenticado exitosamente.
+    LoginResponseData:
+      type: object
+      properties:
+        client_id:
+          type: integer
+          example: 1
+        user_name:
+          type: string
+          example: Sebasqwer1
+        name:
+          type: string
+          example: Sebastian Alvarado.
+      example:
+        user_name: Sebasqwer1
+        name: Sebastian Alvarado.
+        client_id: 1
+
+

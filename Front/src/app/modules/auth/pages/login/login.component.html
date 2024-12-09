@@ -1,0 +1,35 @@
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <img src="assets/img/logo.svg" alt="logo telcox" class="w-5rem flex-shrink-0 mb-3">                
+        <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color-mnt) 10%, var(--primary-color-gradient) 30%);">
+            <div class="w-full surface-card py-8 px-5 sm:px-4 md:px-4 lg:px-4 xl:px-4 sm:py-6 md:py-6 lg:py-6 xl:py-6" style="border-radius:53px">
+                <form [formGroup]="formLogin">
+                    <div class="mb-5">
+                        <label for="email1" class="block text-900 text-xl font-medium mb-2">Usuario</label>
+                        <input id="email1" type="text" placeholder="Usuario" pInputText class="w-full w-17rem sm:w-25rem md:w-25rem lg:w-25rem xl:w-25rem"
+                             formControlName="user">
+                        <div class="color-invalid-form-message">
+                            <small>{{ isFieldRequired('user')}}</small>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <label for="password1" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
+                        <p-password id="password1"  placeholder="Contraseña" [toggleMask]="true"
+                            [feedback]="false" formControlName="pass"
+                            inputStyleClass="w-full w-17rem sm:w-25rem md:w-25rem lg:w-25rem xl:w-25rem">
+                        </p-password>
+                        <div class="color-invalid-form-message">
+                            <small>{{ isFieldRequired('pass')}}</small>
+                        </div>
+                    </div>
+
+                    <div class="flex align-items-center justify-content-between mb-5 gap-5">
+                        <button pButton pRipple label="Iniciar sesión" class="w-full p-3 text-xl style-main-button" (click)="onSubmit()"></button>
+                    </div>
+                  
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

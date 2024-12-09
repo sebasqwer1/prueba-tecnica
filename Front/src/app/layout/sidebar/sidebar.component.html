@@ -1,0 +1,68 @@
+<nav class="sidebar">
+    <header>
+        <div class="image-text">
+            <span (click)="onIndex()" class="image" >
+                <img src="assets/img/logo.svg" alt="logo">
+            </span>
+            <div class="text header-text">
+                <span class="name">{{username}}</span>
+                <span class="profession">{{name}}</span>
+            </div>
+        </div>
+        <i (click)="toggle()" class="bx bx-chevron-right toggle"></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+
+            <li class="search-box">
+                <a href="javascript:void(0)">
+                    <i  (click)="toggleSearch('buscar')" class='bx bx-search icon' ></i>
+                    <input  (input)="getText($event.target)" class="text-search" type="text" placeholder="Buscar...">
+                </a>
+            </li>
+
+            <app-menu-item
+                *ngFor="let menuItem of cloneMenu"
+                [menuItem]="menuItem"
+                [flagSidebar]="flagSidebar"
+                (clickEmit)="getClick($event)"
+                
+                (onAccionMiniNav)="getOnAccionMiniNav($event)"
+            ></app-menu-item>
+
+        </div>
+
+        <div class="botton-content">
+            <li class="logout">
+                <a class="btn-cerrar-sesion" href="javascript:void(0)" (click)="logout()">
+                    <i class='bx bx-log-out icon' ></i>
+                    <span class="text nav-text">Cerrar sesión</span>
+                </a>
+            </li>
+
+            <li class="mode">
+                <div class="moon-sun">
+                    <i [ngClass]="iconMode" class='bx icon moon' ></i>
+                </div>
+                <span class="mode-text text">Modo {{textMode}}</span>
+                <div (click)="modeSwitch()" class="toggle-switch">
+                    <span class="switch"></span>
+                </div>
+            </li>
+            
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- <div class="header-section">
+
+</div> -->
+
+<section class="home">
+    <router-outlet></router-outlet>
+</section>
+
+

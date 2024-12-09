@@ -1,0 +1,17 @@
+<div class="card flex justify-content-center">
+    <p-toast [breakpoints]="{'920px': {width: '95%', right: '0'}}" position="top-center" key="advance-message" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div class="flex flex-column" style="flex: 1">
+                <div class="text-center">
+                    <h4>{{message.summary}}</h4>
+                    <p>por favor comuniquese con el administrador de sistema</p>
+                    <div *ngIf="message.severity == 'error' " style="display: flex; justify-content: center; align-items: center;">
+                        <p style="font-weight: bold;">{{message.detail}}</p>
+                        <i class="pi pi-copy" style="font-size: 1rem; margin-left: 10px;cursor: pointer; font-weight: bold;" (click)="copyToClipboard(message.detail)" pTooltip="Copiar"></i>
+                    </div>
+                    
+                </div>
+            </div>
+        </ng-template>
+    </p-toast>
+</div>

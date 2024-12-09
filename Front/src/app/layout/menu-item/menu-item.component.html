@@ -1,0 +1,51 @@
+
+
+<div  *ngIf="!hasChildrens; else elseBlock">
+
+    <ul class="menu-links">
+        <li [pTooltip]=" flagSidebar ? menuItem.text : '' "  [ngClass]="{'margin-li': menuItem.menuFatherId != null}" class="nav-link">
+            <a (click)="onNavigate(menuItem.action)" href="javascript:void(0)">
+                <i class="{{menuItem.icon}} icon" ></i>
+                <span style="margin-right: 30px;" [ngClass]="{'view-text': menuItem.menuFatherId != null}" class="text nav-text">{{menuItem.text}}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<ng-template #elseBlock
+    >
+    <ul  class="menu-links">
+      <li [pTooltip]=" flagSidebar ? menuItem.text : '' " [ngClass]="{'margin-li': menuItem.menuFatherId != null}" (click)="collapeMenu()" class="nav-link">
+            <a (click)="onAccion()" href="javascript:void(0)">
+                <i class="{{menuItem.icon}} icon" ></i>
+                <span  class="text nav-text" [ngClass]="{'view-text': menuItem.menuFatherId != null}">{{menuItem.text}}</span>
+                <i style="margin-left: auto;" [ngClass]="{'view-icon': menuItem.menuFatherId != null}" [class]="!flagSidebar ? (isIconUp ? 'bx bx-chevron-down' : 'bx bx-chevron-up') : (isIconUp ? 'bx bx-chevron-right' : 'bx bx-chevron-left')" class="icon desplegable"
+                ></i>
+              </a> 
+        </li>
+
+          <div
+          style="padding-left: 5px;"
+          #collapseBasic
+          *ngIf="hasChildrens"
+          [collapse]="!menuItem.isCollapsed"
+          [isAnimated]="true"
+        >
+          <div
+          
+            class="well well-lg card card-block card-header item-directory"
+          >
+            <app-menu-item
+              *ngFor="let children of menuItem.children"
+              [menuItem]="children"
+              [flagSidebar]="flagSidebar"
+              (clickEmit)="getClick($event)"
+              (onAccionMiniNav)="getOnAccionMiniNav($event)"
+            ></app-menu-item>
+          </div>
+        </div>
+    </ul>
+
+
+  </ng-template>
+
